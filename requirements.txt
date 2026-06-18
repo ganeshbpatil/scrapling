@@ -1,0 +1,8 @@
+scrapling[ai]
+streamlit>=1.35.0
+plotly>=5.22.0
+pandas>=2.2.0
+psycopg2-binary>=2.9.9
+pymongo>=4.7.0
+python-dotenv>=1.0.0
+rich>=13.7.0
