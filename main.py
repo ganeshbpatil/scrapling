@@ -38,7 +38,7 @@ def cmd_spider(args):
     print(f"   By intent:   {stats['by_intent']}")
 
 def cmd_dashboard(args):
-    subprocess.run(["streamlit", "run", "pune_leads/dashboard/app.py"])
+    subprocess.run([sys.executable, "-m", "streamlit", "run", "pune_leads/dashboard/app.py"])
 
 def cmd_export(args):
     from pune_leads.storage.json_storage import JSONStorage
