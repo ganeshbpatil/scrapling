@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from scrapling.spiders import Spider, Response
+from scrapling.fetchers import StealthyFetcher
 from pune_leads.config import PUNE_MICRO_MARKETS, LEAD_SOURCES
 
 _RELEVANCE_KW = [m.lower() for m in PUNE_MICRO_MARKETS] + [
@@ -7,6 +8,7 @@ _RELEVANCE_KW = [m.lower() for m in PUNE_MICRO_MARKETS] + [
 ]
 
 class BaseLeadSpider(Spider):
+    fetcher = StealthyFetcher  # TLS browser impersonation — bypasses basic bot detection
     custom_settings = {
         "DOWNLOAD_DELAY": 2,
         "RESPECT_ROBOTS_TXT": True,
