@@ -1,0 +1,57 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    volumes:
+      - ./output:/app/output
+      - ./crawl_data:/app/crawl_data
+    environment:
+      - POSTGRES_DSN=postgresql://postgres:secret@postgres:5432/pune_leads
+      - MONGO_URI=mongodb://mongo:27017
+      - MONGO_DB=pune_leads
+      - OUTPUT_DIR=/app/output
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    command: spider --all --postgres --mongo
+
+  dashboard:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./output:/app/output
+    environment:
+      - OUTPUT_DIR=/app/output
+    command: dashboard
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: pune_leads
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongodata:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+  mongodata:

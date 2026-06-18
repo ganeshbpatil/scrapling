@@ -1,0 +1,10 @@
+.claude/
+__pycache__/
+*.pyc
+*.pyo
+.env
+output/
+my_crawl_data/
+*.egg-info/
+.venv/
+venv/
